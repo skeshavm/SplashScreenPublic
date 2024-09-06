@@ -82,7 +82,7 @@ end
 
        im_position = get(im, 'Position')
     
-    drawnow
+   % drawnow
 
     %% Need Help Buttons and Links
     % Create a clickable text that opens the web link
