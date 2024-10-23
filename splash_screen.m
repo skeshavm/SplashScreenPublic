@@ -17,7 +17,8 @@ end
 
  if (flag==0)
 
-     end
+ end
+ IsSuspended=0;
     if IsApproved == 0
         return; % Exit the script silently if the content is not approved
     end
@@ -27,10 +28,10 @@ end
 %load the image file for splash screen
     if(flag)
         image_file=hlink.imagefile;
-         web_link=hlink.URL1;
+        % web_link=hlink.URL1;
     else
         image_file=  imgfile;
-        web_link=hlink.URL1;
+        %web_link=hlink.URL1;
     end
 
     img = imread(image_file);
@@ -44,7 +45,7 @@ end
     screenSize = get(0, 'ScreenSize'); % This returns [left, bottom, width, height]
     screenWidth = screenSize(3);
     screenHeight = screenSize(4);
-      
+      % this scaling needs be fixed as it keeps it below full screen.
     SplashImageRatioX=0.8;
     SplashImageRatioY=0.9;
     % Define the splash screen size (you can adjust these values)
@@ -69,12 +70,14 @@ end
     newFigPosition = [0, 0, splashWidth, splashHeight];
 
 % Create the new figure on the same screen as the MATLAB GUI
- 
+    %this need s to hardcoded as is not expected to change
     fig = uifigure('Visible', 'off', 'Menubar', 'none', 'Toolbar', 'none', 'Name', 'GM & MATHWORKS', 'NumberTitle', 'off', 'Resize', 'off','Position',newFigPosition);
     fig_position = get(fig, 'Position')
     set(fig, 'Units', 'pixels');
     set(fig,'Visible','on');
      % Read and display the image
+     %this isze needs to be hardcpded to keep the image size same for all
+     %machines. 
     img1= imresize(img,[378 448]);
    
     im=uiimage(fig,"ImageSource",img,"ScaleMethod",'scaledown', 'Position',[0 0 splashWidth* SplashImageRatioX, splashHeight* SplashImageRatioY]);
@@ -82,10 +85,11 @@ end
 
        im_position = get(im, 'Position')
     
-   % drawnow
+    drawnow
 
     %% Need Help Buttons and Links
     % Create a clickable text that opens the web link
+    % this link needs to be kept constant  for the help link is the same.
    web_link= "https://www.mathworks.com/help/?s_tid=gn_supp";
    p3 =  uibutton(fig,'text','MathWorks Help', ...
         'Position', [0.58*splashWidth, 0.01*splashHeight,130, 30],"ButtonPushedFcn",@(src,event)openlink());
@@ -97,41 +101,38 @@ end
         end
 
     drawnow;
+    NA=height(TA)-1;
+    NE=height(TE);
+
 
         % Define your text and its properties
         %This Updates MathWorks information
+    for i=1:NA
         hlink1=uihyperlink(fig);
         hlink1.FontColor=[0.9 0.9 0.9];
         hlink1.FontSize=12;
-        hlink1.Text= string( TA(1,:).EventName{1});
-        hlink1.URL=  TA(1,:).Recording{1};
+        hlink1.Text= string( TA(1,:).EventName{i});
+        hlink1.URL=  TA(1,:).Recording{i};
         size = hlink1.Position(3:4);
-       % hlink1.Position= [120 200 100 200];
-       % hlink1.Position=[ distance_from_left distance_from_bottom textwidth textheight]; 
-       %15% from edge and 1/3 the image height
-         hlink1.Position=[ 0.2*splashWidth 0.33*splashHeight 160 200]; 
+        hloc=0.33/i;
+        p=100+int16(60/i);
+        hlink1.Position=[ 0.2*splashWidth hloc*splashHeight p 200]; 
             set(fig, 'Visible', 'on');
-         %This Updates GM Anouncement 
+    end
+  i=0;
+  for i=1:NE
         hlink2=uihyperlink(fig);
-        hlink2.FontColor=[0.9  0.9 0.9];
-        hlink2.FontSize=18;
-        hlink2.Text= string( TA(2,:).EventName{1});
-        hlink2.URL=  TA(2,:).Recording{1};
+        hlink2.FontColor=[0.9 0.9 0.9];
+        hlink2.FontSize=12;
+        hlink2.Text= string( TE(i,:).Event);
+        hlink2.URL=  TE(i,:).link;
         size = hlink2.Position(3:4);
-        % hlink2.Position= [120 100 100 200];
-        %15% from edge and 1/5 the image height
-        hlink2.Position=[ 0.2*splashWidth 0.2*splashHeight 100 200]; 
-         set(fig, 'Visible', 'on');
- 
-        hlink3=uihyperlink(fig);
-        hlink3.FontColor=[0.9  1 0.9];
-        hlink3.FontSize=24;
-        hlink3.Text= string( TE(1,:).Event);
-        hlink3.URL=  TE(1,:).link;
-        size = hlink3.Position(3:4);
-        % hlink3.Position= [400 200 100 200];
-        %5% from half of image width and 1/5 th image height
-        hlink3.Position=[ 0.6*splashWidth 0.2*splashHeight 160 200]; 
+        hloc=0.33/i;
+        p=100+int16(60/i);
+        hlink2.Position=[ 0.6*splashWidth hloc*splashHeight p 200]; 
+            set(fig, 'Visible', 'on');
+  end
+  
         set(fig, 'Visible', 'on');
         movegui(fig, 'center');
         
