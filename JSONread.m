@@ -1,9 +1,10 @@
 % the general purpose JSON file
-function [hlink,imgfile,IsApproved,IsSuspended,TEvents,TAnnouncements]=JSONread(flag)
+function [hlink,imgfile,IsApproved,IsSuspended,TE,TA]=JSONread(flag)
 try
       %if local file use
        % fname = 'meta_data.json';
-       % if file is in share point site
+       % if file is in share point site please replace this with your file
+       % location make sure all data used are in the same location
        fname="C:\Users\skeshavm\MATLAB Drive\meta_data.json";
        % fid = fopen(fname,'r+'); 
        %For remote locations scheme_name://path_to_file/my_file.ext
@@ -22,13 +23,13 @@ try
         
         str=raw;
         
-        validDays=20;
+        validDays=365;
         
         
         val = jsondecode(str);
         % validDays=val.validDays;
         IsApproved = val.IsApproved;
-        IsSuspended = val.IsSuspended;
+        IsSuspended =0;  val.IsSuspended;
         EventsTable=table();
         if(datebal>days(validDays))
             IsApproved=false;
@@ -45,22 +46,20 @@ try
         
         
         end
-        TEvents=EventsTable;
-        TAnnouncements=TA;
+
+
+               
         hlink.Text1 = 'LatestEvent';
-        hlink.URL1 = 'https://content.mathworks.com/viewer/6335b66c9ae2f5a75fa14e4b';
-        hlink.Text2 = 'LatestEvent';
-        hlink.URL2 = 'https://content.mathworks.com/viewer/6335b66c9ae2f5a75fa14e4b';
+       
         imgfile=TE(3,1).Var1{1}.DisplayImage;
-        
+         TE=EventsTable;
         flag=true;
-        imgfile="GMSplashScreenBackground.png";
         hlink.imagefile=imgfile;
-        
+       
         % val.isSuspended=flag;
         %jsonencode(val);
         % fprintf(fname,'%s', val)
-        % fclose(fname);
+     %
 catch Me
         disp(getReport(Me));
         flag=false;
