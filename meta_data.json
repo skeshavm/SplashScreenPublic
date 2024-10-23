@@ -1,10 +1,14 @@
-{"IsApproved": true,
+{//these three lines contain info on controlling the life of splash screen
+    "IsApproved": true,
  "IsSuspended":false,
  "validDays":20,
+    //this contains table of events with hyper links 
 "Events":[
 {"Date":"12/06/2023","EventName":"MathWorks Update","Recording":"https://content.mathworks.com/viewer/6335b66c9ae2f5a75fa14e4b"},
  {"Date":"12/08/2023","EventName":"GM","Recording":"https://www.gm.com/"},
+    //this is the GM image this file needs to be in the same place as JSON
    {"Date":"12/16/2023","ImageFile":"GM","DisplayImage":"GMSplashScreenBackground.png"}],
+    //this contains table of Announcements
 "Announcements":[
 {"Date":"12/06/2023","EventName":"MathWorks Update","Recording":"https://content.mathworks.com/viewer/6335b66c9ae2f5a75fa14e4b"},
  {"Date":"12/08/2023","EventName":"GM","Recording":"https://www.gm.com/innovation/electrification"}
