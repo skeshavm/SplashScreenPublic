@@ -37,7 +37,7 @@ try
         end
         TE=cell2table(val.Events);
         TA=struct2table(val.Announcements);
-        n=numel(TE);
+        n=height(TE);
         
         for i=1:n-1
             EventsTable.Date=TE(i,:).Var1{1}.Date;
