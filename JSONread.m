@@ -1,15 +1,15 @@
 % the general purpose JSON file
-function [hlink,imgfile,IsApproved,IsSuspended,TE,TA]=JSONread(flag)
+function [hlink,imgfile,IsApproved,IsSuspended,TE,TA,resizeParams]=JSONread(flag)
 try
       %if local file use
        % fname = 'meta_data.json';
        % if file is in share point site please replace this with your file
+       % name
        % location make sure all data used are in the same location
        fname="C:\Users\skeshavm\MATLAB Drive\meta_data.json";
        % fid = fopen(fname,'r+'); 
        %For remote locations scheme_name://path_to_file/my_file.ext
         %scheme_name for azure blob wasb, wasbs
-        %scheme name for AWS is  s3
         %scheme_name for hdfs is 	hdfs
         %for folder name 'C:\myFolder\myFile.sample_file.txt'
         finfo=dir(fname);
@@ -17,19 +17,21 @@ try
         creationDate = datetime(creationDateNum, 'ConvertFrom', 'datenum');
         currentDate = datetime('now');
         datebal=currentDate-creationDate;
-        
-
+       % resizeParams=[378 448];
+        resizeParams=[450 550];
         raw=fileread(fname,"Encoding","Shift_JIS");
         
         str=raw;
-        
+        %line 26 is for testing please remove it in production
         validDays=365;
         
         
         val = jsondecode(str);
         % validDays=val.validDays;
         IsApproved = val.IsApproved;
-        IsSuspended =0;  val.IsSuspended;
+        %please chnage this line to use commented line as this flag is set
+        %for testing. 
+        IsSuspended =0;  %val.IsSuspended;
         EventsTable=table();
         if(datebal>days(validDays))
             IsApproved=false;
@@ -48,7 +50,8 @@ try
         end
 
 
-               
+        %latest event is a tag for us to pick the latest event, this has to
+        %be the first event in the table.
         hlink.Text1 = 'LatestEvent';
        
         imgfile=TE(3,1).Var1{1}.DisplayImage;
