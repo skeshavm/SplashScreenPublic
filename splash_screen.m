@@ -1,5 +1,6 @@
 function splash_screen()
     flag=1;
+    try 
     [hlink,imgfile,IsApproved,IsSuspended,TE,TA,resizeParams] =JSONread(flag)
     %check if it is approved or flagged for no show or date has expired
     if(flag==false)
@@ -96,9 +97,6 @@ function splash_screen()
     
     % movegui(fig,'northeast')
     
-    function openlink()
-         web(web_link);
-        end
     
     drawnow;
     NA=height(TA)-1;
@@ -142,4 +140,6 @@ function splash_screen()
         % Wait for the figure to be closed
         %uiwait(fig);
         flag=1;
+    catch ME
+    end
     end
