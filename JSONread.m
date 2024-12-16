@@ -23,17 +23,21 @@ try
         
         str=raw;
         %line 26 is for testing please remove it in production
-        validDays=365;
+          val = jsondecode(str);
+      
         
         
         val = jsondecode(str);
+        validDays=val.validDays;
+        repopup=val.popbackduration;
+        %IsApproved = val.IsApproved;
         % validDays=val.validDays;
         IsApproved = val.IsApproved;
         %please chnage this line to use commented line as this flag is set
         %for testing. 
         IsSuspended =0;  %val.IsSuspended;
         EventsTable=table();
-        if(datebal>days(validDays))
+        if(datebal>days(validDays)|datebal<days(repopup))
             IsApproved=false;
             val.IsApproved=false;
         end
