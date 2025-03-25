@@ -2,6 +2,12 @@ if usejava('desktop')
         fprintf('Non-Silent mode:  Running file %s\n', mfilename("fullpath"))
        %Get all the startup files
     all_startups = which('startup.m', '-all');
+   if(length(all_startups)==1)
+
+        splash_screen;
+
+   end
+
     %if there is more than one startup file
     % this is setup such that we do not hit infinite loop
     %get a list of all startup files
@@ -23,14 +29,13 @@ if usejava('desktop')
 
     %NOTE:  Don't want infinite loop!!
 
-    if  isequal(first_startup_file, this_startup_file)
+        if  isequal(first_startup_file, this_startup_file)
 
         %Run the 2nd startup
-       defaultstartupisfirst=false;
-    else
-       defaultstartupisfirst =true;
-    end 
-
+            defaultstartupisfirst=false;
+        else
+            defaultstartupisfirst =true;
+        end 
      if(defaultstartupisfirst)
          splash_screen;
      else
