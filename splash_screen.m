@@ -47,12 +47,12 @@ function splash_screen()
     screenWidth = screenSize(3);
     screenHeight = screenSize(4);
       % this scaling needs be fixed as it keeps it below full screen.
-    SplashImageRatioX=0.8;
-    SplashImageRatioY=0.9;
+    SplashImageRatioX=0.62
+    SplashImageRatioY=0.82
     % Define the splash screen size (you can adjust these values)
-    splashWidth = min( tfig_pos(3), screenWidth);
-    splashHeight = min(tfig_pos(4), screenHeight);
-    imresize(img,[splashWidth,splashHeight]);
+    splashWidth = min( tfig_pos(3), screenWidth*SplashImageRatioX);
+    splashHeight = min(tfig_pos(4), screenHeight*SplashImageRatioY);
+    imresize(img,[splashWidth*SplashImageRatioX,splashHeight*SplashImageRatioY]);
     % Calculate the position to center the splash screen
     posX = (screenWidth - splashWidth) / 2;
     posY = (screenHeight - splashHeight) / 2;
@@ -77,7 +77,7 @@ function splash_screen()
     set(fig, 'Units', 'pixels');
     set(fig,'Visible','on');
      % Read and display the image
-     %this isze needs to be hardcpded to keep the image size same for all
+    %this isze needs to be hardcoded to keep the image size same for all
      %machines. 
     img1= imresize(img,resizeParams);
     
@@ -92,9 +92,9 @@ function splash_screen()
     % Create a clickable text that opens the web link
     % this link needs to be kept constant  for the help link is the same.
     web_link= "https://www.mathworks.com/help/?s_tid=gn_supp";
-    p3 =  uibutton(fig,'text','MathWorks Help', ...
-        'Position', [0.58*splashWidth, 0.01*splashHeight,130, 30],"ButtonPushedFcn",@(src,event)openlink());
-    
+    % p3 =  uibutton(fig,'text','MathWorks Help', ...
+    %     'Position', [0.58*splashWidth, 0.01*splashHeight,130, 30],"ButtonPushedFcn",@(src,event)openlink());
+    % 
     % movegui(fig,'northeast')
     
     
@@ -108,14 +108,15 @@ function splash_screen()
     for i=1:NA
         hlink1=uihyperlink(fig);
         hlink1.FontColor=[0.9 0.9 0.9];
-        hlink1.FontSize=12;
+        hlink1.FontSize=10;
         hlink1.Text= string( TA(1,:).EventName{i});
         hlink1.URL=  TA(1,:).Recording{i};
         size = hlink1.Position(3:4);
-        hloc=0.33/i;
+        hloc=0.2/i;
         p=100+int16(60/i);
-        hlink1.Position=[ 0.2*splashWidth hloc*splashHeight p 200]; 
-            set(fig, 'Visible', 'on');
+        hlink1.Position=[ 0.148*splashWidth hloc*splashHeight p 200]; 
+        %hlink1.Position=[ 0.25*splashWidth hloc*splashHeight p 200]; 
+        set(fig, 'Visible', 'on');
     end
     i=0;
     for i=1:NE
@@ -125,9 +126,10 @@ function splash_screen()
         hlink2.Text= string( TE(i,:).Event);
         hlink2.URL=  TE(i,:).link;
         size = hlink2.Position(3:4);
-        hloc=0.33/i;
+        hloc=0.2/i;
         p=100+int16(60/i);
-        hlink2.Position=[ 0.6*splashWidth hloc*splashHeight p 200]; 
+        hlink2.Position=[ 0.4*splashWidth hloc*splashHeight p 200]; 
+        %hlink2.Position=[ 0.6*splashWidth hloc*splashHeight p 200]; 
             set(fig, 'Visible', 'on');
     end
     
@@ -138,7 +140,7 @@ function splash_screen()
         set(fig, 'Visible', 'on');
         
         % Wait for the figure to be closed
-        %uiwait(fig);
+     
         flag=1;
     catch ME
     end
